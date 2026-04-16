@@ -168,11 +168,49 @@ input:focus { border-left-width:2px; border-left-color:var(--blue); padding-left
 @media(max-width:640px){ .page{ padding:1.25rem 1.25rem 4rem } }
 .calc-grid {
   display: grid;
-  grid-template-columns: 3fr 2fr;
+  grid-template-columns: 1.1fr 1.4fr 1fr;
   gap: 2rem;
-  align-items: start;
+  align-items: stretch;
 }
-@media(max-width:760px){ .calc-grid{grid-template-columns:1fr} }
+.calc-title-col > .card { height: 100%; box-sizing: border-box; }
+.results-sticky { display:flex; flex-direction:column; }
+.results-sticky .empty-state { flex:1; min-height:0; }
+.results-sticky .card.results-body { flex:1; }
+@media(max-width:900px){ .calc-grid{grid-template-columns:1fr 1fr} .calc-title-col{display:none} }
+@media(max-width:640px){ .calc-grid{grid-template-columns:1fr} }
+
+/* ── TITLE COLUMN ────────────────────────────────────── */
+.calc-title-col {
+  display: flex;
+  flex-direction: column;
+}
+.calc-title-col > .card {
+  flex: 1;
+}
+.calc-title-col h1 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(2.8rem, 3.5vw, 4.2rem);
+  line-height: .9;
+  letter-spacing: .02em;
+  color: var(--text);
+  margin-bottom: .6rem;
+}
+.calc-title-col h1 .light { color: var(--dim); }
+.calc-title-col-sub {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: .8rem;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--dim);
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+}
+.calc-title-divider {
+  width: 32px;
+  height: 2px;
+  background: var(--blue);
+  margin-bottom: 1.5rem;
+}
 
 /* ── CARD ────────────────────────────────────────────── */
 .card {
@@ -409,10 +447,10 @@ select option { background: var(--white); }
 .btn:active { transform:translateY(0); }
 
 /* ── RESULTS ─────────────────────────────────────────── */
-.results-sticky { position:sticky; top:80px; }
+.results-sticky { position:relative; }
 
 .empty-state { border-radius:4px;
-  min-height: 360px;
+  min-height: 520px;
   display:flex; flex-direction:column;
   align-items:center; justify-content:center;
   gap:.75rem; text-align:center;
@@ -617,6 +655,12 @@ footer {
 .err.show { display:block; }
 .hidden { display:none !important; }
 
+@media(max-width:900px){
+  #autoToggleBtn { display:block !important; }
+  #autoSection { display:none; border-top:none; padding-top:0; margin-top:0; }
+  #autoSection.open { display:block; padding-top:1.25rem; margin-top:.5rem; border-top:1px solid var(--border); }
+}
+
 @keyframes fadeUp {
   from{opacity:0;transform:translateY(10px)}
   to{opacity:1;transform:translateY(0)}
@@ -641,13 +685,43 @@ footer {
 <div class="page" id="kalkulator">
   <div class="calc-grid">
 
+    <!-- TITLE COL -->
+    <div class="calc-title-col">
+      <div class="card" style="border-left:3px solid var(--blue);">
+        <h1>PPMV<br><span class="light">Kalkulator</span></h1>
+        <div class="calc-title-divider"></div>
+        <div class="calc-title-col-sub">Okvirni izračun posebnog poreza na motorno vozilo</div>
+
+        <button type="button" id="autoToggleBtn" onclick="toggleAutoSection()" style="display:none;width:100%;margin-top:1rem;padding:.65rem 1rem;background:var(--bg);border:1px solid var(--border2);border-radius:4px;text-align:left;cursor:pointer;font-family:inherit;">
+          <span style="font-size:.62rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--dim);">Koji auto uvozite? <span style="font-weight:400;">(neobavezno)</span></span>
+          <span id="autoToggleArrow" style="float:right;color:var(--dim);font-size:.8rem;">﹀</span>
+        </button>
+
+        <div id="autoSection" style="border-top:1px solid var(--border);padding-top:1.25rem;margin-top:.5rem;">
+          <div style="font-size:.62rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--dim);margin-bottom:.2rem;">Koji auto uvozite?</div>
+          <div style="font-size:.7rem;color:var(--dim);margin-bottom:.9rem;">Neobavezno za izračun</div>
+          <div class="fg">
+            <label>Marka</label>
+            <input type="text" id="marka" placeholder="npr. Volkswagen" autocomplete="off">
+          </div>
+          <div class="fg">
+            <label>Model</label>
+            <input type="text" id="model" placeholder="npr. Golf 8 1.5 TSI" autocomplete="off">
+          </div>
+          <div class="fg" style="margin-bottom:0">
+            <label>Snaga motora</label>
+            <div class="iunit">
+              <input type="number" id="kw" placeholder="npr. 110" min="1" max="1500">
+              <span class="unit">kW</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- FORM -->
     <div class="card">
-      <div class="card-intro">
-        <h1>PPMV<br><span class="light">Kalkulator</span></h1>
-        <p class="card-intro-sub">Okvirni izračun posebnog poreza na motorno vozilo</p>
-      </div>
-      <div class="card-label">Podaci o vozilu</div>
+      <div class="card-label" style="margin-top:0">Podaci o vozilu</div>
 
       <div class="fg">
         <label>Prodajna cijena novog vozila</label>
@@ -721,27 +795,6 @@ footer {
       </div>
 
       <button class="btn" onclick="doCalc()"><span class="btn-inner">Izračunaj PPMV →</span></button>
-
-      <div style="margin-top:1.5rem;padding:1.25rem;background:var(--bg);border:1px dashed var(--border2);border-radius:4px;">
-        <div style="font-size:.62rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--dim);margin-bottom:.9rem;">Opcionalno — koji auto?</div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:.5rem;margin-bottom:.5rem;">
-          <div>
-            <label style="font-size:.68rem;">Marka</label>
-            <input type="text" id="marka" placeholder="npr. Volkswagen" autocomplete="off">
-          </div>
-          <div>
-            <label style="font-size:.68rem;">Model</label>
-            <input type="text" id="model" placeholder="npr. Golf 8 1.5 TSI" autocomplete="off">
-          </div>
-        </div>
-        <div style="max-width:50%;">
-          <label style="font-size:.68rem;">Snaga motora</label>
-          <div class="iunit">
-            <input type="number" id="kw" placeholder="npr. 110" min="1" max="1500">
-            <span class="unit">kW</span>
-          </div>
-        </div>
-      </div>
     </div>
 
     <!-- RESULTS -->
@@ -844,6 +897,13 @@ footer {
 </footer>
 
 <script>
+function toggleAutoSection(){
+  const s=document.getElementById('autoSection');
+  const a=document.getElementById('autoToggleArrow');
+  const open=s.classList.toggle('open');
+  a.textContent=open?'︿':'﹀';
+}
+
 // ── PICKER STATE ──────────────────────────────────────
 const pickerValues = { regMonth: '', regYear: '', fuelType: '' };
 
