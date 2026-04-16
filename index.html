@@ -161,14 +161,14 @@ input:focus { border-left-width:2px; border-left-color:var(--blue); padding-left
 
 /* ── MAIN LAYOUT ─────────────────────────────────────── */
 .page {
-  max-width: 1060px;
+  max-width: 1400px;
   margin: 0 auto;
   padding: 2rem 3rem 6rem;
 }
 @media(max-width:640px){ .page{ padding:1.25rem 1.25rem 4rem } }
 .calc-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 3fr 2fr;
   gap: 2rem;
   align-items: start;
 }
@@ -541,7 +541,7 @@ select option { background: var(--white); }
 
 /* ── TABLE SECTION ───────────────────────────────────── */
 .tables-wrap {
-  max-width:1060px;
+  max-width:1400px;
   margin:0 auto;
   padding:0 3rem 6rem;
 }
@@ -720,27 +720,28 @@ footer {
         </div>
       </div>
 
-      <div class="card-label">Podaci za ponudu</div>
+      <button class="btn" onclick="doCalc()"><span class="btn-inner">Izračunaj PPMV →</span></button>
 
-      <div class="fg">
-        <label>Marka vozila</label>
-        <input type="text" id="marka" placeholder="npr. Volkswagen" autocomplete="off">
-      </div>
-
-      <div class="fg">
-        <label>Model vozila</label>
-        <input type="text" id="model" placeholder="npr. Golf 8 1.5 TSI" autocomplete="off">
-      </div>
-
-      <div class="fg">
-        <label>Snaga motora <span style="font-weight:400;text-transform:none;letter-spacing:0;font-size:.7rem;color:var(--dim)">— opcionalno</span></label>
-        <div class="iunit">
-          <input type="number" id="kw" placeholder="npr. 110" min="1" max="1500">
-          <span class="unit">kW</span>
+      <div style="margin-top:1.5rem;padding:1.25rem;background:var(--bg);border:1px dashed var(--border2);border-radius:4px;">
+        <div style="font-size:.62rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--dim);margin-bottom:.9rem;">Opcionalno — koji auto?</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:.5rem;margin-bottom:.5rem;">
+          <div>
+            <label style="font-size:.68rem;">Marka</label>
+            <input type="text" id="marka" placeholder="npr. Volkswagen" autocomplete="off">
+          </div>
+          <div>
+            <label style="font-size:.68rem;">Model</label>
+            <input type="text" id="model" placeholder="npr. Golf 8 1.5 TSI" autocomplete="off">
+          </div>
+        </div>
+        <div style="max-width:50%;">
+          <label style="font-size:.68rem;">Snaga motora</label>
+          <div class="iunit">
+            <input type="number" id="kw" placeholder="npr. 110" min="1" max="1500">
+            <span class="unit">kW</span>
+          </div>
         </div>
       </div>
-
-      <button class="btn" onclick="doCalc()"><span class="btn-inner">Izračunaj PPMV →</span></button>
     </div>
 
     <!-- RESULTS -->
