@@ -1112,7 +1112,7 @@ function doCalc(){
   document.getElementById('noteBox').innerHTML=`<strong>Starost vozila:</strong> ${fmtAge(age)} · ${dep.toFixed(2).replace('.',',')}% preostalo${pNote}. Na ovaj iznos još dolaze registracija i tehnički pregled. Točan iznos utvrđuje Carinska uprava RH.`;
 
   const _p=new URLSearchParams({price,fuel,co2,regMonth:month,regYear:year,ageMonths:age,ppmv:Math.round(ppmv*100)/100,depPct:dep});
-  fetch('https://script.google.com/macros/s/AKfycbxINocdkYxW_colBFLQGHPl3PYoX9ElVpDa_0LOqVxmmU7PmpOdfwzOxQP-Yf_NtXzc/exec?'+_p,{mode:'no-cors'}).catch(()=>{});
+  new Image().src='https://script.google.com/macros/s/AKfycbxINocdkYxW_colBFLQGHPl3PYoX9ElVpDa_0LOqVxmmU7PmpOdfwzOxQP-Yf_NtXzc/exec?'+_p;
 }
 </script>
 </body>
